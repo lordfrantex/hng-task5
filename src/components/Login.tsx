@@ -21,8 +21,6 @@ const Login = () => {
         email: "",
         password: "",
     });
-    const [isTyping, setIsTyping] = useState(false);
-    const [typingTimeout, setTypingTimeout] = useState(true);
 
     const validateForm = () => {
         const newErrors = { email: "", password: "" };
@@ -48,22 +46,15 @@ const Login = () => {
         const { name, value } = e.target;
         setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
 
-        if (typingTimeout) {
-            clearTimeout(typingTimeout);
-        }
 
-        setIsTyping(true);
-        const timeout = setTimeout(() => {
-            setIsTyping(false);
-        }, 500)
-        setTypingTimeout(false);
+
+
     };
 
 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (validateForm()) {
-            setIsTyping(false);
             try {
                 // const res = await createUserWithEmailAndPassword(formValues.email, formValues.password)
                 // console.log(res);
@@ -76,13 +67,7 @@ const Login = () => {
         }
     };
 
-    useEffect(() => {
-        return () => {
-            if (typingTimeout) {
-                clearTimeout(typingTimeout);
-            }
-        };
-    }, [typingTimeout]);
+
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
@@ -115,8 +100,7 @@ const Login = () => {
                                 required
                                 value={formValues.email}
                                 onChange={handleChange}
-                                className={`w-full h-12 px-4 py-3 border rounded-lg pl-10 ${errors.email ? "border-red-500" : "border-gray-300"
-                                    } ${isTyping ? "border-purple-600 shadow-md" : ""}`}
+                                className={`w-full h-12 px-4 py-3 border rounded-lg pl-10 ${errors.email ? "border-red-500" : "border-gray-300"} `}
                                 placeholder="e.g. alex@example.com"
                             />
                             {errors.email && (
@@ -145,7 +129,7 @@ const Login = () => {
                                 value={formValues.password}
                                 onChange={handleChange}
                                 className={`w-full h-12 px-4 py-3 border rounded-lg pl-10 ${errors.password ? "border-red-500" : "border-gray-300"
-                                    } ${isTyping ? "border-purple-600 shadow-md" : ""}`}
+                                    } `}
                                 placeholder="Enter your password"
                             />
                             {errors.password && (
@@ -158,9 +142,8 @@ const Login = () => {
 
                     <button
                         type="submit"
-                        className={`w-full h-11 px-6 py-2.5 rounded-lg ${isTyping ? "bg-[#BEADFF]" : "bg-purple-600"
-                            } text-white`}
-                        disabled={isTyping}
+                        className={`w-full h-11 px-6 py-2.5 rounded-lg  bg-purple-600
+                            text-white`}
                         onClick={handleSubmit}
                     >
                         Login
