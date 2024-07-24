@@ -113,7 +113,7 @@ const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
                         <div className=" w-full rounded-lg p-4 flex items-center gap-3  border border-custom_light_gray bg-white hover:shadow-custom-shadow hover:border-custom_blue">
                             <p className="flex items-center gap-[14.13px] text-custom_dark"><LinkIcon color="#737373" height={16} width={16} /></p>
                             <input type="text" className="w-9/12 outline-transparent" placeholder="e.g. https://www.github.com/benwright" onChange={(e) => dispatch({ type: "UPDATE_LINK", payload: { value: e.target.value, id } })} />
-                            {!link && <span className=" hidden sm:inline text-[12px] text-custom_red ms-auto">Can't be empty</span>}
+                            {!link && <span className=" hidden sm:inline text-[12px] text-custom_red ms-auto">Can&apos;t be empty</span>}
                         </div>
 
                     </div>

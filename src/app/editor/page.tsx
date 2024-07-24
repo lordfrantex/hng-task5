@@ -4,7 +4,7 @@ import { useLink } from "@/context/LinkContext";
 import Image from "next/image"
 
 
-const page = () => {
+const Page = () => {
   const { dispatch, state } = useLink()
 
   const handleSubmit = () => {
@@ -53,4 +53,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

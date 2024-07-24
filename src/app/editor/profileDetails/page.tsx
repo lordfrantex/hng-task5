@@ -3,7 +3,7 @@ import Image from "next/image"
 import SaveBtn from "./SaveBtn"
 import { useLink } from "@/context/LinkContext"
 import { LinkIcon } from "lucide-react"
-const page = () => {
+const Page = () => {
     const { state, dispatch } = useLink()
     return (
         <div>
@@ -61,4 +61,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
