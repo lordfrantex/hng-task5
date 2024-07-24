@@ -1,78 +1,32 @@
 'use client'
 import LinkCard from "@/components/LinkCard";
-import { ChevronDown, Equal, Facebook, Github, Linkedin, LinkIcon, Twitter } from "lucide-react";
+import { useLink } from "@/context/LinkContext";
 import Image from "next/image"
-import { ReactNode, useState } from "react";
+
 
 const page = () => {
+  const { dispatch, state } = useLink()
 
-  type linkDataTypes = {
-    name: string,
-    link?: string,
-    icon: ReactNode
+  const handleSubmit = () => {
+    console.log(state.links);
+
   }
 
-  const linkData: linkDataTypes[] = [
-    {
-      name: 'Github',
-      icon: <Github width={16} height={16} fill="#737373" />
-
-    },
-    {
-      name: 'Facebook',
-      icon: <Facebook width={16} height={16} />
-
-    },
-    {
-      name: 'Linkedin',
-      icon: <Linkedin width={16} height={16} />
-
-    },
-    {
-      name: 'Twitter',
-      icon: <Twitter width={16} height={16} />
-
-    },
-
-  ]
-
-  const [availableLinks, setAvailableLinks] = useState<linkDataTypes[]>([
-    {
-      name: '',
-      link: '',
-      icon: ''
-    }
-  ])
-
-  const addLink = () => {
-    setAvailableLinks(prev => {
-      return [
-        ...prev,
-        {
-          name: '',
-          link: '',
-          icon: ''
-
-        },
-
-      ]
-    })
-  }
 
   return (
     <div>
-      <div className="p-10 ">
+      <div className=" p-6 md:p-10 ">
         <div className="">
 
           <h2 className="text-custom_dark mb-2 text-[32px] font-bold">Customize your links</h2>
           <p className="font-normal text-custom_deep_gray mb-10">Add/edit/remove links below and then share all your profiles with the world!</p>
-          <button onClick={addLink} className="p-[11px] w-full rounded-lg border border-custom_blue font-semibold text-custom_blue mb-6">+ Add new link</button>
+          <button onClick={() => dispatch({ type: "ADD_LINK" })} className="p-[11px] w-full rounded-lg border border-custom_blue font-semibold text-custom_blue mb-6">+ Add new link</button>
         </div>
+
         {
+          state.links && state.links.length > 0 ? (
 
-          availableLinks && availableLinks.length > 0 ? (
-
-            availableLinks.map((items, i: number) => {
+            state.links.map((items, i: number) => {
               return (
                 <LinkCard {...items} key={i} />
               )
@@ -93,7 +47,7 @@ const page = () => {
 
       </div>
       <div className="flex py-6 px-10 border-t">
-        <button className="ms-auto px-[27px] rounded-lg text-white bg-custom_blue py-[11px]">Save</button>
+        <button onClick={handleSubmit} className="ms-auto px-[27px] rounded-lg text-white bg-custom_blue py-[11px]">Save</button>
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import IndexContext from "@/context/indexContext";
 
 
 const instrumentSans = Instrument_Sans({ subsets: ["latin"] });
@@ -18,10 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${instrumentSans.className} bg-custom_offwhite`}>
-        <Navbar />
-        {children}
-      </body>
+      <IndexContext>
+        <body className={`${instrumentSans.className} bg-custom_offwhite`}>
+          {children}
+        </body>
+      </IndexContext>
     </html>
   );
 }
