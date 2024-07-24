@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import IndexContext from "@/context/indexContext";
+import IndexContext from "@/context/IndexContext";
 
 
 const instrumentSans = Instrument_Sans({ subsets: ["latin"] });
