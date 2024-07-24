@@ -22,7 +22,7 @@ const Login = () => {
         password: "",
     });
     const [isTyping, setIsTyping] = useState(false);
-    const [typingTimeout, setTypingTimeout] = useState(null);
+    const [typingTimeout, setTypingTimeout] = useState(true);
 
     const validateForm = () => {
         const newErrors = { email: "", password: "" };
@@ -53,11 +53,10 @@ const Login = () => {
         }
 
         setIsTyping(true);
-        setTypingTimeout(
-            setTimeout(() => {
-                setIsTyping(false);
-            }, 500)
-        );
+        const timeout = setTimeout(() => {
+            setIsTyping(false);
+        }, 500)
+        setTypingTimeout(false);
     };
 
 
