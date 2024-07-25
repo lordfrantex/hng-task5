@@ -1,41 +1,5 @@
-// 'use client'
-// import React, { createContext, useContext, useReducer } from 'react'
-
-
-// export const LinkContext = createContext(null)
-// const initialState = {
-//     links: [
-//         {
-//             id: '23sadfa',
-//             name: 'some',
-//             link: 'zsdflk/.sdkflkakflk.',
-//             icon: 'adflkioiwemlkfmsowe'
-//         }
-//     ]
-// }
-
-// function reducer() {
-//     return
-// }
-
-// const [state, dispatch] = useReducer(reducer, initialState)
-
-// const LinkContextProvider = ({ children }) => {
-//     return (
-//         <LinkContext.Provider value={{ state, dispatch }}>{children}</LinkContext.Provider>
-//     )
-// }
-
-// export default LinkContextProvider
-
-
-// export const useLink = () => {
-//     const context = useContext(LinkContext)
-//     return context
-// }
-
 'use client'
-import React, { createContext, useContext, useReducer, ReactNode, Dispatch } from 'react';
+import React, { createContext, useContext, useReducer, ReactNode, Dispatch, useEffect, useState } from 'react';
 import { uid } from 'uid';
 
 type Link = {
@@ -61,16 +25,7 @@ type Action = {
 };
 
 const initialState: State = {
-    links: [
-        {
-            id: '23sadfa',
-            name: '',
-            link: '',
-            icon: ''
-            // icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-
-        }
-    ],
+    links: [],
     userInfo: {
         firstName: '',
         lastName: '',
@@ -79,10 +34,19 @@ const initialState: State = {
     }
 };
 
+
+
 function reducer(state: State, action: Action): State {
     const { payload, type } = action
     switch (type) {
-        // Add your cases here
+
+        case 'INITIALIZE_LINK':
+            return {
+                ...state,
+                links: payload
+            }
+            break;
+
         case 'UPDATE_LINK':
             const { value, id } = payload
             const findLink = state.links.map(link => link.id === id ? { ...link, link: value } : link)
@@ -177,6 +141,24 @@ type LinkContextProviderProps = {
 const LinkContextProvider = ({ children }: LinkContextProviderProps) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    useEffect(() => {
+        const persistedLocalStorage = localStorage.getItem('links')
+        if (persistedLocalStorage) {
+            const parsedLink = JSON.parse(persistedLocalStorage)
+            dispatch({ type: 'INITIALIZE_LINK', payload: persistedLocalStorage });
+        }
+        setIsInitialized(true);
+    }, []);
+
+    useEffect(() => {
+        if (isInitialized) {
+            localStorage.setItem('cart', JSON.stringify(state));
+        }
+    }, [state, isInitialized]);
+
+
     return (
         <LinkContext.Provider value={{ state, dispatch }}>
             {children}
@@ -185,6 +167,8 @@ const LinkContextProvider = ({ children }: LinkContextProviderProps) => {
 };
 
 export default LinkContextProvider;
+
+
 
 export const useLink = (): LinkContextProps => {
     const context = useContext(LinkContext);

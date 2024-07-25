@@ -2,15 +2,49 @@
 import LinkCard from "@/components/LinkCard";
 import { useLink } from "@/context/LinkContext";
 import Image from "next/image"
-
+import { db } from '@/components/firebaseConfig'
+import { get, ref, set, update } from "firebase/database";
+import { useEffect } from "react";
 
 const Page = () => {
   const { dispatch, state } = useLink()
 
-  const handleSubmit = () => {
-    console.log(state.links);
+
+  // Define the type for links
+  type LinkType = {
+    icon: string;
+    name: string;
+    link: string;
+    id: string;
+  };
+
+  // Fetch links from Firebase Realtime Database
+  useEffect(() => {
+
+    const fetchLinks = async (): Promise<LinkType[]> => {
+      const dbRef = ref(db, '/items');
+      const snapshot = await get(dbRef);
+      const data = snapshot.val();
+      const payload = Object.values(data) as LinkType[];
+      dispatch({ type: 'INITIALIZE_LINK', payload })
+      return payload
+    };
+
+    fetchLinks()
+  }, [dispatch])
+
+  // write to database
+  const handleSubmit = async () => {
+
+    const updates: { [key: string]: any } = {};
+
+    state.links.forEach((item) => {
+      updates[`/items/${item.id}`] = item;
+    });
+    const getIt = await update(ref(db), updates)
 
   }
+
 
 
   return (

@@ -5,14 +5,32 @@ import { ReactNode, useState } from "react"
 // import { db } from '@/components/firebaseConfig'
 // import { ref, set } from "firebase/database";
 // import { uid } from "uid";
+
+
+
+// write to database
+// const writeToDb = async () => {
+//     const uuid = uid()
+//     const getIt = await set(ref(db, `/${uuid}`), {
+//         id: uuid,
+//         name: 'frank',
+//         age: 45,
+//         pics: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+
+//     })
+//     console.log(getIt);
+
+// }
 import { useLink } from "@/context/LinkContext";
+import Icon from "./Icon";
 
 
 type linkDataTypes = {
     name: string,
     link?: string,
     id: string,
-    icon: ReactNode
+    // icon: ReactNode
+    icon: string
 }
 const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
 
@@ -22,19 +40,7 @@ const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
     const [initialOpen, setInitialOpen] = useState(false)
 
 
-    // write to database
-    // const writeToDb = async () => {
-    //     const uuid = uid()
-    //     const getIt = await set(ref(db, `/${uuid}`), {
-    //         id: uuid,
-    //         name: 'frank',
-    //         age: 45,
-    //         pics: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
 
-    //     })
-    //     console.log(getIt);
-
-    // }
 
 
 
@@ -42,34 +48,41 @@ const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
     type linkDataTypes = {
         name: string,
         link?: string,
-        icon: ReactNode
+        // icon: ReactNode
+        icon: string
     }
+
+    const icons = {
+        github: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWdpdGh1YiI+PHBhdGggZD0iTTE1IDIydi00YTQuOCA0LjggMCAwIDAtMS0zLjVjMyAwIDYtMiA2LTUuNS4wOC0xLjI1LS4yNy0yLjQ4LTEtMy41LjI4LTEuMTUuMjgtMi4zNSAwLTMuNSAwIDAtMSAwLTMgMS41LTIuNjQtLjUtNS4zNi0uNS04IDBDNiAyIDUgMiA1IDJjLS4zIDEuMTUtLjMgMi4zNSAwIDMuNUE1LjQwMyA1LjQwMyAwIDAgMCA0IDljMCAzLjUgMyA1LjUgNiA1LjUtLjM5LjQ5LS42OCAxLjA1LS44NSAxLjY1LS4xNy42LS4yMiAxLjIzLS4xNSAxLjg1djQiLz48cGF0aCBkPSJNOSAxOGMtNC41MSAyLTUtMi03LTIiLz48L3N2Zz4=',
+        linkden: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxpbmtlZGluIj48cGF0aCBkPSJNMTYgOGE2IDYgMCAwIDEgNiA2djdoLTR2LTdhMiAyIDAgMCAwLTItMiAyIDIgMCAwIDAtMiAydjdoLTR2LTdhNiA2IDAgMCAxIDYtNnoiLz48cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSIxMiIgeD0iMiIgeT0iOSIvPjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIi8+PC9zdmc+'
+    }
+
     const linkData: linkDataTypes[] = [
         {
             name: 'Github',
-            icon: <Github width={16} height={16} fill="#737373" />
+            icon: icons.github
 
         },
-        {
-            name: 'Facebook',
-            icon: <Facebook width={16} height={16} />
+        // {
+        //     name: 'Facebook',
+        //     icon: <Facebook width={16} height={16} />
 
-        },
+        // },
         {
             name: 'Linkedin',
-            icon: <Linkedin width={16} height={16} />
+            icon: icons.linkden
 
         },
-        {
-            name: 'Twitter',
-            icon: <Twitter width={16} height={16} />
+        // {
+        //     name: 'Twitter',
+        //     icon: <Twitter width={16} height={16} />
 
-        },
+        // },
 
     ]
     return (
         <div>
-            <div className="bg-custom_offwhite p-5  rounded-xl">
+            <div className="bg-custom_offwhite p-5 mb-6  rounded-xl">
                 <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-2 text-custom_deep_gray font-bold">
                         <Equal />
@@ -83,7 +96,8 @@ const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
                     <p className="text-custom_dark text-[12px] mb-1">Platform</p>
                     <div className="dropdown w-full ">
                         <div tabIndex={0} onClick={() => { setInitialOpen(true); initialOpen && setIsopened(p => !p) }} role="button" className="rounded-lg m-1 w-full p-4 flex justify-between border border-custom_light_gray bg-white hover:shadow-custom-shadow hover:border-custom_blue">
-                            <p className="flex items-center gap-[14.13px] text-custom_dark">{icon} {name}</p>
+                            {/* <p className="flex items-center gap-[14.13px] text-custom_dark">{icon} {name}</p> */}
+                            <p className="flex items-center gap-[14.13px] text-custom_dark"><Icon src={icon} /> {name}</p>
 
                             <span><ChevronDown color="#633CFF" /></span>
                         </div>
@@ -91,10 +105,9 @@ const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
                             {
                                 linkData.map((data: linkDataTypes, i: number) => {
                                     return (
-                                        // <li key={i} onClick={() => { setOption(p => ({ ...p, name: data.name, icon: data.icon })); setIsopened(p => !p); }}>
                                         <li key={i} onClick={(e) => { dispatch({ type: "UPDATE_ICON_AND_NAME", payload: { name: data.name, icon: data.icon, id } }); setIsopened(p => !p); }}>
                                             <div>
-                                                <span className="text-custom_deep_gray">{data.icon}</span>{data.name}
+                                                <span className="text-custom_deep_gray"><Icon src={data.icon} /> </span>{data.name}
                                             </div>
                                         </li>
                                     )
