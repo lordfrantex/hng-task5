@@ -139,7 +139,6 @@ type LinkContextProviderProps = {
 };
 
 const LinkContextProvider = ({ children }: LinkContextProviderProps) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
 
     const [isInitialized, setIsInitialized] = useState(false);
 
@@ -147,11 +146,12 @@ const LinkContextProvider = ({ children }: LinkContextProviderProps) => {
         const persistedLocalStorage = localStorage.getItem('links')
         if (persistedLocalStorage) {
             const parsedLink = JSON.parse(persistedLocalStorage)
-            dispatch({ type: 'INITIALIZE_LINK', payload: persistedLocalStorage });
+            dispatch({ type: 'INITIALIZE_LINK', payload: parsedLink });
         }
         setIsInitialized(true);
     }, []);
 
+    const [state, dispatch] = useReducer(reducer, initialState);
     useEffect(() => {
         if (isInitialized) {
             localStorage.setItem('cart', JSON.stringify(state));

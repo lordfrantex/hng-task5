@@ -2,25 +2,6 @@
 import { ChevronDown, Equal, Facebook, Github, Linkedin, Link as LinkIcon, Twitter } from "lucide-react"
 import { ReactNode, useState } from "react"
 
-// import { db } from '@/components/firebaseConfig'
-// import { ref, set } from "firebase/database";
-// import { uid } from "uid";
-
-
-
-// write to database
-// const writeToDb = async () => {
-//     const uuid = uid()
-//     const getIt = await set(ref(db, `/${uuid}`), {
-//         id: uuid,
-//         name: 'frank',
-//         age: 45,
-//         pics: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-
-//     })
-//     console.log(getIt);
-
-// }
 import { useLink } from "@/context/LinkContext";
 import Icon from "./Icon";
 
@@ -38,11 +19,6 @@ const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
 
     const [isOpened, setIsopened] = useState(false)
     const [initialOpen, setInitialOpen] = useState(false)
-
-
-
-
-
 
 
     type linkDataTypes = {
@@ -125,7 +101,7 @@ const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
                     <div className=" w-full">
                         <div className=" w-full rounded-lg p-4 flex items-center gap-3  border border-custom_light_gray bg-white hover:shadow-custom-shadow hover:border-custom_blue">
                             <p className="flex items-center gap-[14.13px] text-custom_dark"><LinkIcon color="#737373" height={16} width={16} /></p>
-                            <input type="text" className="w-9/12 outline-transparent" placeholder="e.g. https://www.github.com/benwright" onChange={(e) => dispatch({ type: "UPDATE_LINK", payload: { value: e.target.value, id } })} />
+                            <input type="text" className="w-9/12 outline-transparent" value={link} placeholder="e.g. https://www.github.com/benwright" onChange={(e) => dispatch({ type: "UPDATE_LINK", payload: { value: e.target.value, id } })} />
                             {!link && <span className=" hidden sm:inline text-[12px] text-custom_red ms-auto">Can&apos;t be empty</span>}
                         </div>
 
