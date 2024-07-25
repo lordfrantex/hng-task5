@@ -7,13 +7,13 @@ const Page = () => {
     const { state, dispatch } = useLink()
     return (
         <div>
-            <div className=" p-10 ">
+            <div className=" p-6 md:p-10">
                 <div className="">
 
-                    <h2 className="text-custom_dark mb-2 text-[32px] font-bold">Customize your links</h2>
+                    <h2 className="text-custom_dark mb-2 text-[32px] font-bold">Profile Details</h2>
                     <p className="font-normal text-custom_deep_gray mb-10">Add your details to create a personal touch to your profile.</p>
                 </div>
-                <div className="flex flex-wrap items-center mb-6 bg-custom_offwhite rounded-xl p-5 justify-between">
+                <div className="flex gap-4 flex-wrap items-center mb-6 bg-custom_offwhite rounded-xl p-5 justify-between">
                     <p>Profile picture</p>
                     <div className="flex flex-wrap items-center cursor-pointer gap-6">
                         <div className=" px-10 py-[60px] grid gap-2 bg-custom_light_blue2 rounded-xl text-center">
@@ -27,27 +27,27 @@ const Page = () => {
 
                 <div className="bg-custom_offwhite rounded-xl p-5 grid gap-3 ">
                     <div className="block sm:flex items-center justify-between ">
-                        <span>First name <sup>*</sup></span>
+                        <span className="mb-1 block text-custom_dark">First name <sup>*</sup></span>
                         <div className="flex md:w-3/4 border bg-white items-center  px-4 py-3 rounded-lg border-custom_light_gray  gap-[100px] hover:shadow-custom-shadow hover:border-custom_blue">
-                            <input onChange={(e) => dispatch({ type: "FIRST_NAME", payload: e.target.value })} value={state.userInfo.firstName} type="text" className="outline-transparent  bg-transparent" placeholder="e.g John" />
+                            <input onChange={(e) => dispatch({ type: "FIRST_NAME", payload: e.target.value })} value={state.userInfo.firstName} type="text" className="outline-none font-semibold text-custom_dark  bg-transparent" placeholder="e.g John" />
                             {!state.userInfo.firstName && <span className="text-[12px] hidden sm:inline ms-auto text-custom_red">  Can&apos;t be empty</span>}
 
                         </div>
                     </div>
 
                     <div className="block sm:flex items-center justify-between ">
-                        <span>Last name <sup>*</sup></span>
-                        <div className=" flex border bg-white items-center md:w-3/4  px-4 py-3 rounded-lg border-custom_light_gray  gap-[100px] hover:shadow-custom-shadow hover:border-custom_blue">
-                            <input onChange={(e) => dispatch({ type: "LAST_NAME", payload: e.target.value })} value={state.userInfo.lastName} type="text" className="outline-transparent bg-transparent " placeholder="e.g. Appleseed" />
+                        <span className="mb-1 block text-custom_dark">Last name <sup>*</sup></span>
+                        <div className=" flex border bg-white items-center w-full md:w-3/4  px-4 py-3 rounded-lg border-custom_light_gray  gap-[100px] hover:shadow-custom-shadow hover:border-custom_blue">
+                            <input onChange={(e) => dispatch({ type: "LAST_NAME", payload: e.target.value })} value={state.userInfo.lastName} type="text" className="outline-none font-semibold text-custom_dark bg-transparent " placeholder="e.g. Appleseed" />
                             {!state.userInfo.lastName && <span className="text-[12px] hidden sm:inline ms-auto text-custom_red">  Can&apos;t be empty</span>}
                         </div>
 
 
                     </div>
                     <div className=" block sm:flex items-center justify-between ">
-                        <span className="">Email</span>
+                        <span className="mb-1 block text-custom_dark">Email</span>
                         <div className=" flex  border md:w-3/4 bg-white items-center  px-4 py-3 rounded-lg border-custom_light_gray  gap-[100px] hover:shadow-custom-shadow hover:border-custom_blue">
-                            <input onChange={(e) => dispatch({ type: "EMAIL", payload: e.target.value })} value={state.userInfo.email} type="text" className="outline-transparent bg-transparent" placeholder="e.g email@example.com" />
+                            <input onChange={(e) => dispatch({ type: "EMAIL", payload: e.target.value })} value={state.userInfo.email} type="text" className="outline-none font-semibold text-custom_dark bg-transparent " placeholder="e.g email@example.com" />
                             {!state.userInfo.email && <span className="text-[12px] hidden sm:inline ms-auto text-custom_red">  Can&apos;t be empty</span>}
 
 
