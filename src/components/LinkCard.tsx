@@ -1,89 +1,153 @@
 'use client'
-import { ChevronDown, Equal, Facebook, Github, Linkedin, Link as LinkIcon, Twitter } from "lucide-react"
-import { ReactNode, useState } from "react"
-
+import {
+    ChevronDown, Equal, Facebook, Github, Linkedin, Link as LinkIcon, Twitter, Youtube,
+    Codepen,
+    Gitlab,
+} from "lucide-react"
+import { FaFreeCodeCamp, FaStackOverflow, } from "react-icons/fa";
+import { BiLogoDevTo } from "react-icons/bi";
+import { FaHashnode, FaTwitch } from "react-icons/fa6";
+import { SiCodewars, SiFrontendmentor } from "react-icons/si";
+import { Dispatch, ReactElement, SetStateAction, useState } from "react"
 import { useLink } from "@/context/LinkContext";
-import Icon from "./Icon";
+import { LinkType } from "@/app/editor/page";
+import { useAuthLink } from "@/context/AuthContext";
+import LinkList from "./LinkList";
+import { toast } from "react-toastify";
+type linkCardTypes = {
+    name: string;
+    link: string;
+    id: string;
+    i: number;
+    setCopyLink: Dispatch<SetStateAction<LinkType[]>>
+    copyLink: LinkType[]
 
-
-type linkDataTypes = {
-    name: string,
-    link?: string,
-    id: string,
-    // icon: ReactNode
-    icon: string
 }
-const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
 
-    const { state, dispatch } = useLink()
+
+export type linkDataTypes = {
+    name: string;
+    link?: string;
+    icon: ReactElement;
+}
+export const linkData: linkDataTypes[] = [
+    {
+        name: 'Github',
+        icon: <Github width={16} height={16} />
+    },
+    {
+        name: 'Linkedin',
+        icon: <Linkedin width={16} height={16} />
+    },
+    {
+        name: 'Youtube',
+        icon: <Youtube width={16} height={16} />
+    },
+    {
+        name: 'Frontend Mentor',
+        icon: <SiFrontendmentor width={16} height={16} />
+    },
+    {
+        name: 'Twitter',
+        icon: <Twitter width={16} height={16} />
+    },
+    {
+        name: 'Facebook',
+        icon: <Facebook width={16} height={16} />
+    },
+    {
+        name: 'Twitch',
+        icon: <FaTwitch width={16} height={16} />
+    },
+    {
+        name: 'Dev.to',
+        icon: <BiLogoDevTo width={16} height={16} />
+    },
+    {
+        name: 'Codewars',
+        icon: <SiCodewars width={16} height={16} />
+    },
+    {
+        name: 'Codepen',
+        icon: <Codepen width={16} height={16} />
+    },
+    {
+        name: 'freeCodeCamp',
+        icon: <FaFreeCodeCamp width={16} height={16} />
+    },
+    {
+        name: 'GitLab',
+        icon: <Gitlab width={16} height={16} />
+    },
+    {
+        name: 'Hashnode',
+        icon: <FaHashnode width={16} height={16} />
+    },
+    {
+        name: 'Stack Overflow',
+        icon: <FaStackOverflow width={16} height={16} />
+    }
+];
+
+
+const LinkCard = ({ name, link, id, i, setCopyLink, copyLink }: linkCardTypes) => {
+    const passState = { name, link, id, }
+    const { authState } = useAuthLink()
+    const [selectErr, setSelectErr] = useState('')
+
+    const { fetchInitialData, state, removeLink: removeLinkFunc } = useLink()
 
     const [isOpened, setIsopened] = useState(false)
     const [initialOpen, setInitialOpen] = useState(false)
 
+    const removeLink = async () => {
+        try {
+            removeLinkFunc(authState.profile.id, id)
+            fetchInitialData(authState.profile.id)
+            toast("Item deleted successfully")
 
-    type linkDataTypes = {
-        name: string,
-        link?: string,
-        // icon: ReactNode
-        icon: string
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const handleSelect = (name: string) => {
+        if (copyLink.some(itm => itm.name === name)) {
+            setSelectErr(` ${name} account already exist. You are only permitted to have just one.`);
+            setTimeout(() => setSelectErr(''), 2500);
+            return
+        }
+
+        setCopyLink(prev => prev.map(link => link.id === id ? { ...link, name: name } : link))
+
     }
 
-    const icons = {
-        github: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWdpdGh1YiI+PHBhdGggZD0iTTE1IDIydi00YTQuOCA0LjggMCAwIDAtMS0zLjVjMyAwIDYtMiA2LTUuNS4wOC0xLjI1LS4yNy0yLjQ4LTEtMy41LjI4LTEuMTUuMjgtMi4zNSAwLTMuNSAwIDAtMSAwLTMgMS41LTIuNjQtLjUtNS4zNi0uNS04IDBDNiAyIDUgMiA1IDJjLS4zIDEuMTUtLjMgMi4zNSAwIDMuNUE1LjQwMyA1LjQwMyAwIDAgMCA0IDljMCAzLjUgMyA1LjUgNiA1LjUtLjM5LjQ5LS42OCAxLjA1LS44NSAxLjY1LS4xNy42LS4yMiAxLjIzLS4xNSAxLjg1djQiLz48cGF0aCBkPSJNOSAxOGMtNC41MSAyLTUtMi03LTIiLz48L3N2Zz4=',
-        linkden: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxpbmtlZGluIj48cGF0aCBkPSJNMTYgOGE2IDYgMCAwIDEgNiA2djdoLTR2LTdhMiAyIDAgMCAwLTItMiAyIDIgMCAwIDAtMiAydjdoLTR2LTdhNiA2IDAgMCAxIDYtNnoiLz48cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSIxMiIgeD0iMiIgeT0iOSIvPjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIi8+PC9zdmc+'
-    }
-
-    const linkData: linkDataTypes[] = [
-        {
-            name: 'Github',
-            icon: icons.github
-
-        },
-        // {
-        //     name: 'Facebook',
-        //     icon: <Facebook width={16} height={16} />
-
-        // },
-        {
-            name: 'Linkedin',
-            icon: icons.linkden
-
-        },
-        // {
-        //     name: 'Twitter',
-        //     icon: <Twitter width={16} height={16} />
-
-        // },
-
-    ]
     return (
-        <div>
-            <div className="bg-custom_offwhite p-5 mb-6  rounded-xl">
+        <div >
+            <div className="bg-custom_offwhite p-5 mb-6  rounded-xl cursor-pointer">
                 <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-2 text-custom_deep_gray font-bold">
                         <Equal />
-                        <span>Link #1</span>
+                        <span>Link #{i + 1}</span>
 
                     </div>
-                    <span className="cursor-pointer text-[#888888]" >Remove</span>
+                    <span onClick={removeLink} className="cursor-pointer text-[#888888]" >Remove</span>
                 </div>
                 <div className="">
 
                     <p className="text-custom_dark text-[12px] mb-1">Platform</p>
+                    {selectErr && <span className="text-sm text-custom_red font-semibold">{selectErr}</span>}
                     <div className="dropdown w-full ">
                         <div tabIndex={0} onClick={() => { setInitialOpen(true); initialOpen && setIsopened(p => !p) }} role="button" className="rounded-lg m-1 w-full p-4 flex justify-between border border-custom_light_gray bg-white hover:shadow-custom-shadow hover:border-custom_blue">
-                            {/* <p className="flex items-center gap-[14.13px] text-custom_dark">{icon} {name}</p> */}
-                            <p className="flex items-center gap-[14.13px] text-custom_dark"><Icon src={icon} /> {name}</p>
-
+                            <p className="flex items-center gap-[14.13px] text-custom_dark"><LinkList {...passState} color='#333333' />{name}</p>
                             <span><ChevronDown color="#633CFF" /></span>
                         </div>
-                        <ul tabIndex={0} className={`dropdown-content w-full menu bg-base-100 rounded-box z-[1]  p-2 shadow ${isOpened ? 'hidden' : ''}`}>
+                        <ul tabIndex={0} className={`dropdown-content max-h-[200px] overflow-auto w-full menu bg-base-100 rounded-box z-[1]  p-2 shadow ${isOpened ? 'hidden' : ''}`}>
                             {
                                 linkData.map((data: linkDataTypes, i: number) => {
                                     return (
-                                        <li key={i} onClick={(e) => { dispatch({ type: "UPDATE_ICON_AND_NAME", payload: { name: data.name, icon: data.icon, id } }); setIsopened(p => !p); }}>
+                                        <li key={i} onClick={(e) => { handleSelect(data.name); setIsopened(p => !p); }}>
                                             <div>
-                                                <span className="text-custom_deep_gray"><Icon src={data.icon} /> </span>{data.name}
+                                                <span className="text-custom_deep_gray"><LinkList link={data.link} name={data.name} /> </span>{data.name}
                                             </div>
                                         </li>
                                     )
@@ -101,7 +165,7 @@ const LinkCard = ({ name, link, icon, id }: linkDataTypes) => {
                     <div className=" w-full">
                         <div className=" w-full rounded-lg p-4 flex items-center gap-3  border border-custom_light_gray bg-white hover:shadow-custom-shadow hover:border-custom_blue">
                             <p className="flex items-center gap-[14.13px] text-custom_dark"><LinkIcon color="#737373" height={16} width={16} /></p>
-                            <input type="text" className="w-9/12 outline-transparent" value={link} placeholder="e.g. https://www.github.com/benwright" onChange={(e) => dispatch({ type: "UPDATE_LINK", payload: { value: e.target.value, id } })} />
+                            <input type="text" className="w-9/12 outline-transparent" value={link} placeholder="e.g. https://www.github.com/benwright" onChange={(e) => setCopyLink(prev => prev.map(link => link.id === id ? { ...link, link: e.target.value } : link))} />
                             {!link && <span className=" hidden sm:inline text-[12px] text-custom_red ms-auto">Can&apos;t be empty</span>}
                         </div>
 

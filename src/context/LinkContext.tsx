@@ -1,22 +1,19 @@
 'use client'
+import { LinkType } from '@/app/editor/page';
+import { db } from '@/components/firebaseConfig';
+import { onValue, ref, remove } from 'firebase/database';
 import React, { createContext, useContext, useReducer, ReactNode, Dispatch, useEffect, useState } from 'react';
 import { uid } from 'uid';
+import { useAuthLink } from './AuthContext';
 
-type Link = {
+export type Link = {
     id: string;
     name: string;
     link: string;
-    icon: string;
 };
 
 type State = {
-    links: Link[],
-
-    userInfo: {
-        firstName: string,
-        lastName: string,
-        email: string
-    }
+    links: Link[];
 };
 
 type Action = {
@@ -26,110 +23,58 @@ type Action = {
 
 const initialState: State = {
     links: [],
-    userInfo: {
-        firstName: '',
-        lastName: '',
-        email: ''
-
-    }
 };
 
-
-
 function reducer(state: State, action: Action): State {
-    const { payload, type } = action
+    const { payload, type } = action;
     switch (type) {
-
         case 'INITIALIZE_LINK':
+
             return {
                 ...state,
                 links: payload
-            }
-            break;
-
+            };
         case 'UPDATE_LINK':
-            const { value, id } = payload
-            const findLink = state.links.map(link => link.id === id ? { ...link, link: value } : link)
+            const { value, id } = payload;
+
             return {
                 ...state,
-                links: findLink
-
-            }
-            break;
+                links: state.links.map(link => link.id === id ? { ...link, link: value } : link)
+            };
         case 'UPDATE_ICON_AND_NAME': {
-
-            const { name, id, icon } = payload
-
-            const findNameAndIcon = state.links.map(link => link.id === id ? { ...link, name, icon } : link)
-
+            const { name, id, } = payload;
             return {
                 ...state,
-                links: findNameAndIcon
-
-            }
+                links: state.links.map(link => link.id === id ? { ...link, name } : link)
+            };
         }
-
-            break;
-
         case 'REMOVE_LINK':
-            const removeLink = state.links.filter(link => link.id !== id)
             return {
                 ...state,
-                links: removeLink
-
-            }
-            break;
-
+                links: state.links.filter(link => link.id !== payload.id)
+            };
         case 'ADD_LINK':
-            const uuid: string = uid()
+            const uuid: string = uid();
             const linkForm: Link = {
                 id: uuid,
                 name: '',
                 link: '',
-                icon: ''
-            }
+            };
             return {
                 ...state,
                 links: [...state.links, linkForm]
-            }
-            break;
-
-        case 'FIRST_NAME':
-
-            return {
-                ...state,
-                userInfo: { ...state.userInfo, firstName: payload }
-            }
-            break;
-        case 'LAST_NAME':
-
-
-            return {
-                ...state,
-                userInfo: { ...state.userInfo, lastName: payload }
-            }
-            break;
-        case 'EMAIL':
-
-
-            return {
-                ...state,
-                userInfo: { ...state.userInfo, email: payload }
-            }
-            break;
-
-
+            };
         default:
             return state;
     }
 }
 
-
-
-
 interface LinkContextProps {
     state: State;
     dispatch: Dispatch<Action>;
+    fetchInitialData: (id: string) => any;
+    loading: boolean;
+    removeLink: (uid: string, id: string) => any;
 }
 
 export const LinkContext = createContext<LinkContextProps | undefined>(undefined);
@@ -138,37 +83,63 @@ type LinkContextProviderProps = {
     children: ReactNode;
 };
 
-const LinkContextProvider = ({ children }: LinkContextProviderProps) => {
+const LinkContextProvider = ({ children }: { children: ReactNode }) => {
+    const [loading, setLoading] = useState(true)
 
-    const [isInitialized, setIsInitialized] = useState(false);
 
-    useEffect(() => {
-        const persistedLocalStorage = localStorage.getItem('links')
-        if (persistedLocalStorage) {
-            const parsedLink = JSON.parse(persistedLocalStorage)
-            dispatch({ type: 'INITIALIZE_LINK', payload: parsedLink });
+
+    const removeLink = async (uid: string, id: string) => {
+        try {
+            const itemRef = ref(db, `/items/${uid}/${id}`)
+            await remove(itemRef)
+        } catch (err) {
+            console.log(err);
         }
-        setIsInitialized(true);
-    }, []);
+    }
+
+    const fetchInitialData = async (id: string) => {
+        try {
+            const dbRef = ref(db, `/items/${id}`);
+
+
+            const unsubscribe = onValue(dbRef, (snapshot) => {
+                const data = snapshot.val();
+                console.log(data);
+
+                const payload = data && Object.values(data) as LinkType[];
+
+                if (payload) {
+                    const sortLink = payload?.sort((a: LinkType, b: LinkType) => (a?.order ?? 0) - (b?.order ?? 0));
+                    const sorted = sortLink && Object.values(sortLink) as LinkType[];
+                    console.log('sorted link is', sorted);
+                    dispatch({ type: 'INITIALIZE_LINK', payload: sorted })
+                }
+
+                if (!payload) {
+                    dispatch({ type: 'INITIALIZE_LINK', payload: [] })
+                }
+            });
+
+            return () => unsubscribe();
+
+        } catch (error) {
+            console.error("Error fetching initial data:", error);
+        } finally {
+            setLoading(false)
+
+        }
+    };
 
     const [state, dispatch] = useReducer(reducer, initialState);
-    useEffect(() => {
-        if (isInitialized) {
-            localStorage.setItem('cart', JSON.stringify(state));
-        }
-    }, [state, isInitialized]);
-
 
     return (
-        <LinkContext.Provider value={{ state, dispatch }}>
+        <LinkContext.Provider value={{ state, dispatch, fetchInitialData, loading, removeLink }}>
             {children}
         </LinkContext.Provider>
     );
 };
 
 export default LinkContextProvider;
-
-
 
 export const useLink = (): LinkContextProps => {
     const context = useContext(LinkContext);

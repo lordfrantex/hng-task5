@@ -1,10 +1,19 @@
 
 'use client'
+import { auth, db } from '@/components/firebaseConfig'
+import { useAuthLink } from '@/context/AuthContext'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { ref, set } from 'firebase/database'
 import { Lock, Mail } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 const Page = () => {
+    const router = useRouter()
+    const { authDispatch } = useAuthLink()
+
+
     const [formValues, setFormValues] = useState({
         email: "",
         password: "",
@@ -38,17 +47,29 @@ const Page = () => {
         return true;
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const isValid = validateInput()
-        if (!isValid) {
-            console.log('no', errormsg);
-            return
-        }
         try {
 
-            console.log('yes');
+            if (isValid) {
+                const res = await createUserWithEmailAndPassword(auth, formValues.email, formValues.password)
 
-            console.log(formValues);
+
+                if (res?.user) {
+
+                    const itemToSave = {
+                        email: res.user.email,
+                        id: res.user?.uid
+                    }
+
+                    await set(ref(db, `/users/${res.user.uid}`), itemToSave);
+                    authDispatch({ type: 'INITIALIZE_STATE', payload: itemToSave })
+                    router.push('/login')
+                }
+
+            }
+
+
 
         } catch (error) {
             console.log(error);

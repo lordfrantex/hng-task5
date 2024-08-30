@@ -3,6 +3,7 @@ import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import IndexContext from "@/context/IndexContext";
+import { ToastContainer } from "react-toastify";
 
 
 const instrumentSans = Instrument_Sans({ subsets: ["latin"] });
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en" className="">
       <IndexContext>
         <body className={`${instrumentSans.className} bg-custom_offwhite`}>
+          <ToastContainer />
           {children}
         </body>
       </IndexContext>

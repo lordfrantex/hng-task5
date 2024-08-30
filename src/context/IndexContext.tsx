@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import LinkContextProvider from './LinkContext';
+import AuthContextProvider from './AuthContext';
 
 type IndexContextProps = {
     children: ReactNode;
@@ -7,7 +8,11 @@ type IndexContextProps = {
 
 const IndexContext = ({ children }: IndexContextProps) => {
     return (
-        <LinkContextProvider>{children}</LinkContextProvider>
+        <LinkContextProvider>
+            <AuthContextProvider>
+                {children}
+            </AuthContextProvider>
+        </LinkContextProvider>
     );
 };
 
