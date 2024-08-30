@@ -10,8 +10,9 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 import useFirebaseFetch from "@/utilities/FetchDB";
 import LinkList from "./LinkList";
-import { determineColor } from "@/app/preview/page";
+// import { determineColor } from "@/app/preview/page";
 import Link from "next/link";
+import { determineColor } from "./determineColor";
 type LinkType = {
     name: string;
     link: string;
