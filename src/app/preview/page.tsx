@@ -112,7 +112,7 @@ const Page = () => {
             <Link href={`${link.link}`} target='_blank' style={{ backgroundColor: link.color }} className="flex  cursor-pointer text-white rounded-xl justify-between items-center px-4 py-[18px]">
                 <span className="flex items-center gap-2">
                     {link.name}
-                    <LinkList{...link} color='white' />
+                    <LinkList{...link} key={link.id} color='white' />
                 </span>
                 <ArrowRight width={16} height={16} color="white" />
             </Link>
