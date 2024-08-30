@@ -104,14 +104,12 @@ const LinkContextProvider = ({ children }: { children: ReactNode }) => {
 
             const unsubscribe = onValue(dbRef, (snapshot) => {
                 const data = snapshot.val();
-                console.log(data);
 
                 const payload = data && Object.values(data) as LinkType[];
 
                 if (payload) {
                     const sortLink = payload?.sort((a: LinkType, b: LinkType) => (a?.order ?? 0) - (b?.order ?? 0));
                     const sorted = sortLink && Object.values(sortLink) as LinkType[];
-                    console.log('sorted link is', sorted);
                     dispatch({ type: 'INITIALIZE_LINK', payload: sorted })
                 }
 

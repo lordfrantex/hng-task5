@@ -99,16 +99,17 @@ const Page = () => {
     const { state, fetchInitialData } = useLink()
     const { authState, fetchInitialAuthData } = useAuthLink()
 
-    const mapit = state.links.map(link => {
+    const mapIt = state.links.map(link => {
         return {
             ...link,
             color: determineColor(link.name)
         }
     })
 
-    const mapLinks = (state.links && state.links.length > 0) && mapit.map((link) => (
-        <div className="mb-4">
-            <Link href={`${link.link}`} key={link.id} target='_blank' style={{ backgroundColor: link.color }} className="flex  cursor-pointer text-white rounded-xl justify-between items-center px-4 py-[18px]">
+
+    const mapLinks = (state.links && state.links.length > 0) && mapIt.map((link) => (
+        <div className="mb-4" key={link.id}>
+            <Link href={`${link.link}`} target='_blank' style={{ backgroundColor: link.color }} className="flex  cursor-pointer text-white rounded-xl justify-between items-center px-4 py-[18px]">
                 <span className="flex items-center gap-2">
                     {link.name}
                     <LinkList{...link} color='white' />
