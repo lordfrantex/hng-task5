@@ -11,13 +11,13 @@ import { ref, set } from 'firebase/database'
 
 
 const Login = () => {
-    useEffect(() => {
-        // Check if the user came from the email change process
-        if (window.history.state?.fromEmailChange) {
-            // After the user signs in, navigate them back
-            router.back();
-        }
-    }, []);
+    // useEffect(() => {
+    //     // Check if the user came from the email change process
+    //     if (window.history.state?.fromEmailChange) {
+    //         // After the user signs in, navigate them back
+    //         router.back();
+    //     }
+    // }, []);
 
     const { authDispatch } = useAuthLink()
     const [

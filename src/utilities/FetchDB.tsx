@@ -10,23 +10,23 @@ const useFirebaseFetch = (path: string) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState('');
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const dbRef = ref(db, path);
-                const snapshot = await get(dbRef);
-                const fetchedData = snapshot.val();
-                setData(fetchedData);
-            } catch (err) {
-                setError('Error');
-            } finally {
-                setLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true);
+    //         try {
+    //             const dbRef = ref(db, path);
+    //             const snapshot = await get(dbRef);
+    //             const fetchedData = snapshot.val();
+    //             setData(fetchedData);
+    //         } catch (err) {
+    //             setError('Error');
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
-        fetchData();
-    }, [path]);
+    //     fetchData();
+    // }, [path]);
 
     return { loading, data, error };
 };

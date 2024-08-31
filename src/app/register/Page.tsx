@@ -94,7 +94,7 @@ const Page = () => {
                             <div className="flex items-center gap-[13.5px] py-3 px-4 border border-custom_light_gray rounded-xl">
 
                                 <Mail fill='#737373' width={16} height={16} color='white' />
-                                <input value={formValues.email} onChange={(e) => setFormValues(p => ({ ...p, email: e.target.value }))} type="email" name='email' placeholder='e.g alex@gmail.com' className='outline-none bg-transparent' />
+                                <input value={formValues.email} onChange={(e) => setFormValues(p => ({ ...p, email: e.target.value }))} type="email" name='email' placeholder='e.g alex@gmail.com' className='outline-none' />
                             </div>
                         </div>
                         <div className="">

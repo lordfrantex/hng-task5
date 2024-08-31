@@ -29,7 +29,12 @@ function reducer(state: State, action: Action): State {
     const { payload, type } = action;
     switch (type) {
         case 'INITIALIZE_LINK':
-
+            return {
+                ...state,
+                links: payload
+            };
+        case 'INITIALIZE_COPYLINK':
+            if (state.links === payload) return state
             return {
                 ...state,
                 links: payload
