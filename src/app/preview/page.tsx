@@ -10,7 +10,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // Define the type for links
 type LinkType = {
     name: string;
@@ -61,6 +63,8 @@ const Page = () => {
     return (
         // <div className="min-h-screen grid place-items-center relative ">
         <div className=" relative z-50">
+            <ToastContainer />
+
             <span className='hidden sm:block w-full h-[357px] -z-10 absolute bg-custom_blue rounded-b-[32px] left-0 top-0'></span>
             <div className="  rounded-b-[32px] p-6 ">
 
