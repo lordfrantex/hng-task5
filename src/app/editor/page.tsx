@@ -38,33 +38,6 @@ const Page = () => {
     setCopyLink(state.links);
   }, [state.links]);
 
-
-  // const handleSubmit = async () => {
-  //   try {
-  //     const updates: { [key: string]: any } = {};
-  //     copyLink.forEach((item, i) => {
-  //       const itemWithOrder = { ...item, order: i };
-  //       if (!itemWithOrder.link || !itemWithOrder.name) {
-  //         setUploadError("Item not Saved!!! Link or Name cannot be Empty.");
-  //         setTimeout(() => setUploadError(''), 3000);
-  //         return;
-  //       }
-  //       updates[`/items/${authState.profile.id}/${item.id}`] = itemWithOrder;
-  //     });
-  //     if (!uploadError) {
-  //       console.log(uploadError);
-
-  //     } else {
-  //       console.log(uploadError);
-  //       await update(ref(db), updates);
-  //       toast("Link Saved Successfully");
-  //     }
-
-
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
   const isValidUrl = (url: string) => {
     try {
       new URL(url);
@@ -103,7 +76,6 @@ const Page = () => {
 
       // Proceed with update if no errors
       if (!hasError && !uploadError) {
-        console.log('order');
 
         await update(ref(db), updates);
         toast("Link Saved Successfully");
