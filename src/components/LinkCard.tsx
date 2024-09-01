@@ -123,7 +123,7 @@ const LinkCard = ({ name, link, id, i, setCopyLink, copyLink }: linkCardTypes) =
 
     return (
         <div >
-            <div className="bg-custom_offwhite p-5 mb-6  rounded-xl cursor-pointer">
+            <div className="bg-custom_offwhite p-5 mb-10 md:mb-6  rounded-xl cursor-pointer">
                 <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-2 text-custom_deep_gray font-bold">
                         <Equal />
@@ -160,15 +160,15 @@ const LinkCard = ({ name, link, id, i, setCopyLink, copyLink }: linkCardTypes) =
                 </div>
 
                 <div className="">
-
                     <p className="text-custom_dark text-[12px] mb-1">Link</p>
-                    <div className=" w-full">
-                        <div className=" w-full rounded-lg p-4 flex items-center gap-3  border border-custom_light_gray bg-white hover:shadow-custom-shadow hover:border-custom_blue">
-                            <p className="flex items-center gap-[14.13px] text-custom_dark"><LinkIcon color="#737373" height={16} width={16} /></p>
-                            <input type="text" className="w-9/12 outline-transparent" value={link} placeholder="e.g. https://www.github.com/benwright" onChange={(e) => setCopyLink(prev => prev.map(link => link.id === id ? { ...link, link: e.target.value } : link))} />
-                            {!link && <span className=" hidden sm:inline text-[12px] text-custom_red ms-auto">Can&apos;t be empty</span>}
-                        </div>
-
+                    <div className=" w-full relative">
+                        <input type="text" className="ps-14 w-full rounded-lg p-4 
+                         border border-custom_light_gray bg-white hover:shadow-custom-shadow focus:shadow-custom-shadow
+                           outline-custom_blue hover:border-custom_blue"
+                            placeholder="e.g. https://www.github.com/benwright" value={link}
+                            onChange={(e) => setCopyLink(prev => prev.map(link => link.id === id ? { ...link, link: e.target.value } : link))} />
+                        <span className=" absolute top-1/2 -translate-y-1/2 left-5  text-custom_dark"><LinkIcon color="#737373" height={16} width={16} /></span>
+                        {!link && <span className=" hidden absolute -translate-y-1/2 top-1/2 right-4 sm:inline text-[12px] text-custom_red ms-auto">Can&apos;t be empty</span>}
                     </div>
 
                 </div>

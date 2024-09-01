@@ -39,25 +39,80 @@ const Page = () => {
   }, [state.links]);
 
 
+  // const handleSubmit = async () => {
+  //   try {
+  //     const updates: { [key: string]: any } = {};
+  //     copyLink.forEach((item, i) => {
+  //       const itemWithOrder = { ...item, order: i };
+  //       if (!itemWithOrder.link || !itemWithOrder.name) {
+  //         setUploadError("Item not Saved!!! Link or Name cannot be Empty.");
+  //         setTimeout(() => setUploadError(''), 3000);
+  //         return;
+  //       }
+  //       updates[`/items/${authState.profile.id}/${item.id}`] = itemWithOrder;
+  //     });
+  //     if (!uploadError) {
+  //       console.log(uploadError);
+
+  //     } else {
+  //       console.log(uploadError);
+  //       await update(ref(db), updates);
+  //       toast("Link Saved Successfully");
+  //     }
+
+
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       const updates: { [key: string]: any } = {};
+      let hasError = false;
+
       copyLink.forEach((item, i) => {
+
         const itemWithOrder = { ...item, order: i };
+        // Validate item and check for errors
         if (!itemWithOrder.link || !itemWithOrder.name) {
           setUploadError("Item not Saved!!! Link or Name cannot be Empty.");
           setTimeout(() => setUploadError(''), 3000);
+          hasError = true;
           return;
         }
+
+
+        if (!isValidUrl(itemWithOrder.link)) {
+          toast("Invalid URL format: Ensure ALL links follows this format: https://www.example.com.");
+          // setTimeout(() => setUploadError(''), 3000);
+          hasError = true;
+          return;
+        }
+        // Add valid item to updates
         updates[`/items/${authState.profile.id}/${item.id}`] = itemWithOrder;
       });
 
-      await update(ref(db), updates);
-      toast("Link Saved Successfully");
+      // Proceed with update if no errors
+      if (!hasError && !uploadError) {
+        console.log('order');
+
+        await update(ref(db), updates);
+        toast("Link Saved Successfully");
+      }
     } catch (err) {
-      console.log(err);
+      console.error("An error occurred while updating the database:", err);
     }
   };
+
 
   const addLink = () => {
     const uuid: string = uid();
