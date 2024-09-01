@@ -11,7 +11,7 @@ type Action = {
     payload?: any;
 };
 
-type State = {
+export type UserState = {
     profile: {
         firstName: string;
         lastName: string;
@@ -23,13 +23,13 @@ type State = {
 
 
 interface AuthContextProps {
-    authState: State;
+    authState: UserState;
     authDispatch: Dispatch<Action>;
     loading: boolean,
     fetchInitialAuthData: (id: string) => any
 }
 
-const authReducer = (state: State, action: Action) => {
+const authReducer = (state: UserState, action: Action) => {
     const { type, payload } = action
     switch (type) {
         case "INITIALIZE_STATE":
@@ -43,7 +43,7 @@ const authReducer = (state: State, action: Action) => {
     }
 
 }
-const initialAuthState: State = {
+const initialAuthState: UserState = {
     profile: {
         firstName: '',
         lastName: '',

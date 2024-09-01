@@ -50,7 +50,7 @@ const Page = () => {
     ));
     const handleCopy = async () => {
         try {
-            const currentUrl = window.location.href;
+            const currentUrl = window.location.origin + `/${user?.uid}`;
             await navigator.clipboard.writeText(currentUrl);
             toast('Link copied to clipboard!');
         } catch (err) {
