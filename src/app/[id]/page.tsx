@@ -101,11 +101,11 @@ const Page = ({ params }: { params: { id: string } }) => {
             <span className='hidden sm:block w-full h-[357px] -z-10 absolute bg-custom_blue rounded-b-[32px] left-0 top-0'></span>
             <div className="rounded-b-[32px] p-6">
                 <div className="py-4 sm:px-6 sm:bg-white flex justify-between gap-4 items-center rounded-xl mb-[102px]">
-                    {fetchUser && (
+                    {/* {fetchUser && (
                         <Link href='/editor' className='rounded-lg text-custom_blue border border-custom_blue py-3 font-semibold px-7 whitespace-nowrap'>
                             Back to Editor
                         </Link>
-                    )}
+                    )} */}
                     <button onClick={handleCopy} className='bg-custom_blue ms-auto text-white rounded-lg py-3 px-7 font-semibold whitespace-nowrap'>
                         Share Link
                     </button>
