@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-toastify';
 // Define the type for links
 type LinkType = {
     name: string;
@@ -51,7 +52,7 @@ const Page = () => {
         try {
             const currentUrl = window.location.href;
             await navigator.clipboard.writeText(currentUrl);
-            alert('Link copied to clipboard!');
+            toast('Link copied to clipboard!');
         } catch (err) {
             console.error('Failed to copy: ', err);
         }
